@@ -13,7 +13,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if self.path == "/metals":
             response = get_all_metals()
-
+        elif self.path == "/orders":
+            response = get_all_orders()
+        elif self.path == "/sizes":
+            response = get_all_sizes()
+        elif self.path == "/styles":
+            response = get_all_styles()
         else:
             response = []
 
