@@ -41,30 +41,50 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "metals":
             if id is not None:
-                response = get_single_metal(id)
+                metal = get_single_metal(id)
+                if metal is not None:
+                    response = f"{metal}"
+                else:
+                    self._set_headers(404)
+                    response = "That metal is not currently in stock for jewelry."
             else:
-                response = get_all_metals()
+                response = f"{get_all_metals()}"
             self.wfile.write(json.dumps(response).encode())
 
-        elif resource == "orders":
+        if resource == "orders":
             if id is not None:
-                response = get_single_order(id)
+                order = get_single_order(id)
+                if order is not None:
+                    response = f"{order}"
+                else:
+                    self._set_headers(404)
+                    response = "That order was never placed, or was cancelled."
             else:
-                response = get_all_orders()
+                response = f"{get_all_orders()}"
             self.wfile.write(json.dumps(response).encode())
 
-        elif resource == "sizes":
+        if resource == "sizes":
             if id is not None:
-                response = get_single_size(id)
+                size = get_single_size(id)
+                if size is not None:
+                    response = f"{size}"
+                else:
+                    self._set_headers(404)
+                    response = "That size is not currently in stock for jewelry."
             else:
-                response = get_all_sizes()
+                response = f"{get_all_sizes()}"
             self.wfile.write(json.dumps(response).encode())
 
-        elif resource == "styles":
+        if resource == "styles":
             if id is not None:
-                response = get_single_style(id)
+                style = get_single_style(id)
+                if style is not None:
+                    response = f"{style}"
+                else:
+                    self._set_headers(404)
+                    response = "That style is not currently in stock for jewelry."
             else:
-                response = get_all_styles()
+                response = f"{get_all_styles()}"
             self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
