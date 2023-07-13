@@ -100,15 +100,21 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Initialize new animal
-        new_order = None
+        created_order = None
 
         # Add a new animal to the list. Don't worry about
         # the orange squiggle, you'll define the create_animal
         # function next.
         if resource == "orders":
-            new_order = create_order(post_body)
+            if "metalId" in post_body and "sizeId" in post_body and "styleId" in post_body:
+                self._set_headers(201)
+                created_order = create_order(post_body)
+            else:
+                self._set_headers(400)
+                created_order = {
+                    "message": f'{"Metal is required" if "metalId" not in post_body else ""} {"Size is required" if "sizeId" not in post_body else ""} {"Style is required" if "styleId" not in post_body else ""}'}
 
-        self.wfile.write(json.dumps(new_order).encode())
+        self.wfile.write(json.dumps(created_order).encode())
 
     def do_DELETE(self):
         """Handles DELETE requests to the server"""
