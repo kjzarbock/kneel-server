@@ -1,3 +1,4 @@
+"""defining metals"""
 METALS = [
     {
         "id": 1,
@@ -28,10 +29,12 @@ METALS = [
 
 
 def get_all_metals():
+    """getting all metals"""
     return METALS
 
 # Function with a single parameter
 def get_single_metal(id):
+    """getting a single metal"""
     # Variable to hold the found metal, if it exists
     requested_metal = None
 

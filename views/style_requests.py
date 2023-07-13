@@ -1,3 +1,4 @@
+"""defining styles"""
 STYLES = [
     {
         "id": 1,
@@ -17,9 +18,11 @@ STYLES = [
 ]
 
 def get_all_styles():
+    """getting all styles"""
     return STYLES
 
 def get_single_style(id):
+    """getting a single style"""
     # Variable to hold the found metal, if it exists
     requested_style = None
 

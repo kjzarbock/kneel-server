@@ -1,3 +1,4 @@
+"""defining orders"""
 ORDERS = [
     {
         "metalId": 4,
@@ -51,9 +52,11 @@ ORDERS = [
 
 
 def get_all_orders():
+    """getting all orders"""
     return ORDERS
 
 def get_single_order(id):
+    """getting a single order"""
     # Variable to hold the found metal, if it exists
     requested_order = None
 
@@ -68,6 +71,7 @@ def get_single_order(id):
     return requested_order
 
 def create_order(order):
+    """creating an order"""
     # Get the id value of the last animal in the list
     max_id = ORDERS[-1]["id"]
 

@@ -66,6 +66,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
+        """Handles POST requests to the server"""
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
@@ -84,11 +85,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         # function next.
         if resource == "orders":
             new_order = create_order(post_body)
-            
+
         self.wfile.write(json.dumps(new_order).encode())
 
     def do_PUT(self):
-        """Handles PUT requests to the server """
+        """Handles PUT requests to the server"""
         self.do_POST()
 
     def _set_headers(self, status):
@@ -104,8 +105,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_OPTIONS(self):
-        """Sets the options headers
-        """
+        """Sets the options headers"""
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
