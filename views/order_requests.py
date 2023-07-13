@@ -1,4 +1,6 @@
-"""defining orders"""
+from .metal_requests import get_single_metal
+from .size_requests import get_single_size
+from .style_requests import get_single_style
 ORDERS = [
     {
         "metalId": 4,
@@ -67,6 +69,17 @@ def get_single_order(id):
         # instead of the dot notation that JavaScript used.
         if order["id"] == id:
             requested_order = order
+            metal = get_single_metal(requested_order["id"])
+            size = get_single_size(requested_order["id"])
+            style = get_single_style(requested_order["id"])
+
+            requested_order["metal"] = metal
+            requested_order["size"] = size
+            requested_order["style"] = style
+            requested_order.pop("metalId", None)
+            requested_order.pop("sizeId", None)
+            requested_order.pop("styleId", None)
+
 
     return requested_order
 
