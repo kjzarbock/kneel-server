@@ -137,8 +137,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             }
             self.wfile.write(json.dumps(response).encode())
 
-
     # A method that handles any PUT request.
+
     def do_PUT(self):
         self._set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
