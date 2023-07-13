@@ -28,3 +28,17 @@ SIZES = [
 
 def get_all_sizes():
     return SIZES
+
+def get_single_size(id):
+    # Variable to hold the found metal, if it exists
+    requested_size = None
+
+    # Iterate the METALS list above. Very similar to the
+    # for..of loops you used in JavaScript.
+    for size in SIZES:
+        # Dictionaries in Python use [] notation to find a key
+        # instead of the dot notation that JavaScript used.
+        if size["id"] == id:
+            requested_size = size
+
+    return requested_size
