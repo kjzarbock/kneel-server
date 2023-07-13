@@ -35,3 +35,4 @@ def get_single_style(id):
             requested_style = style
 
     return requested_style
+
