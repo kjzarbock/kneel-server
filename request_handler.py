@@ -119,14 +119,24 @@ class HandleRequests(BaseHTTPRequestHandler):
     def do_DELETE(self):
         """Handles DELETE requests to the server"""
     # Set a 204 response code
-        self._set_headers(204)
+        self._set_headers(405)
+
     # Parse the URL
         (resource, id) = self.parse_url(self.path)
+
     # Delete a single order from the list
         if resource == "orders":
-            delete_order(id)
-    # Encode the new order and send in response
-        self.wfile.write("".encode())
+            response = {
+                "message": "Deleting orders is not allowed."
+            }
+            self.wfile.write(json.dumps(response).encode())
+        elif resource == "customers":
+            self._set_headers(405)
+            response = {
+                "message": "Deleting customers is not allowed."
+            }
+            self.wfile.write(json.dumps(response).encode())
+
 
     # A method that handles any PUT request.
     def do_PUT(self):
