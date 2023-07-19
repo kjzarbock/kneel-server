@@ -59,3 +59,6 @@ SELECT * FROM `Metals`;
 SELECT * FROM `Styles`;
 SELECT * FROM `Sizes`;
 SELECT * FROM `Orders`;
+
+ALTER TABLE `Sizes`
+RENAME COLUMN carats TO carets;
