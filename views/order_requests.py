@@ -1,53 +1,57 @@
+import sqlite3
+import json
+from models import Order
 from .metal_requests import get_single_metal
 from .size_requests import get_single_size
 from .style_requests import get_single_style
+
 ORDERS = [
     {
-        "metalId": 4,
-        "sizeId": 3,
-        "styleId": 2,
+        "metal_id": 4,
+        "size_id": 3,
+        "style_id": 2,
         "id": 1
     },
     {
-        "metalId": 5,
-        "sizeId": 5,
-        "styleId": 3,
+        "metal_id": 5,
+        "size_id": 5,
+        "style_id": 3,
         "id": 2
     },
     {
-        "metalId": 5,
-        "sizeId": 3,
-        "styleId": 2,
+        "metal_id": 5,
+        "size_id": 3,
+        "style_id": 2,
         "id": 3
     },
     {
-        "metalId": 4,
-        "sizeId": 3,
-        "styleId": 3,
+        "metal_id": 4,
+        "size_id": 3,
+        "style_id": 3,
         "id": 4
     },
     {
-        "metalId": 4,
-        "sizeId": 3,
-        "styleId": 1,
+        "metal_id": 4,
+        "size_id": 3,
+        "style_id": 1,
         "id": 5
     },
     {
-        "metalId": 3,
-        "sizeId": 4,
-        "styleId": 2,
+        "metal_id": 3,
+        "size_id": 4,
+        "style_id": 2,
         "id": 6
     },
     {
-        "metalId": 2,
-        "sizeId": 3,
-        "styleId": 3,
+        "metal_id": 2,
+        "size_id": 3,
+        "style_id": 3,
         "id": 7
     },
     {
-        "metalId": 3,
-        "sizeId": 4,
-        "styleId": 1,
+        "metal_id": 3,
+        "size_id": 4,
+        "style_id": 1,
         "id": 8
     }
 ]
@@ -76,9 +80,9 @@ def get_single_order(id):
             requested_order["metal"] = metal
             requested_order["size"] = size
             requested_order["style"] = style
-            requested_order.pop("metalId", None)
-            requested_order.pop("sizeId", None)
-            requested_order.pop("styleId", None)
+            requested_order.pop("metal_id", None)
+            requested_order.pop("size_id", None)
+            requested_order.pop("style_id", None)
 
 
     return requested_order
