@@ -118,36 +118,89 @@ def get_all_orders():
 
 
 def get_single_order(id):
-    # Variable to hold the found metal, if it exists
-    """getting a single order"""
-    requested_order = None
+    # First, try to fetch data from the database
+    with sqlite3.connect("./kneel.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-    # Iterate the METALS list above. Very similar to the
-    # for..of loops you used in JavaScript.
-    for order in ORDERS:
-        # Dictionaries in Python use [] notation to find a key
-        # instead of the dot notation that JavaScript used.
-        if order["id"] == id:
-            requested_order = order
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute("""
+        SELECT
+            o.id,
+            o.metal_id,
+            o.size_id,
+            o.style_id,
+            m.metal metal,
+            s.carets carets,
+            st.style style,
+            m.price metal_price,
+            s.price size_price,
+            st.price style_price
+        FROM orders o
+        JOIN metals m ON m.id = o.metal_id
+        JOIN sizes s ON s.id = o.size_id
+        JOIN styles st ON st.id = o.style_id
+        WHERE o.id = ?
+        """, (id,))
 
-    return requested_order
+        # Load the single result into memory
+        data = db_cursor.fetchone()
 
-def create_order(order):
-    """creating an order"""
-    # Get the id value of the last animal in the list
-    max_id = ORDERS[-1]["id"]
+        if data:
+            # Create an order instance from the current row
+            order = Order(
+                data['id'],
+                data['metal_id'],
+                data['size_id'],
+                data['style_id']
+            )
 
-    # Add 1 to whatever that number is
-    new_id = max_id + 1
+            # Create Metal, Size, and Style instances and assign them to the order
+            metal = Metal(data['metal_id'], data['metal'], data['metal_price'])
+            size = Size(data['size_id'], data['carets'], data['size_price'])
+            style = Style(data['style_id'], data['style'], data['style_price'])
 
-    # Add an `id` property to the animal dictionary
-    order["id"] = new_id
+            order.metal = metal.__dict__
+            order.size = size.__dict__
+            order.style = style.__dict__
 
-    # Add the animal dictionary to the list
-    ORDERS.append(order)
+            return order.__dict__
+        else:
+            # If data is not found in the database, check if it exists in ORDERS list
+            for order in ORDERS:
+                if order['id'] == id:
+                    return order
 
-    # Return the dictionary with `id` property added
-    return order
+    # If no order is found with the specified ID, return a JSON response with an error message
+    return {"message": "Order not found"}
+
+
+
+def create_order(new_order):
+    with sqlite3.connect("./kneel.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Orders
+            ( metal_id, size_id, style_id)
+        VALUES
+            ( ?, ?, ? );
+        """, (new_order['metal_id'], new_order['size_id'],
+            new_order['style_id'], ))
+
+        # The `lastrowid` property on the cursor will return
+        # the primary key of the last thing that got added to
+        # the database.
+        id = db_cursor.lastrowid
+
+        # Add the `id` property to the animal dictionary that
+        # was sent by the client so that the client sees the
+        # primary key in the response.
+        new_order['id'] = id
+
+
+    return new_order
 
 def delete_order(id):
     # Initial -1 value for animal index, in case one isn't found
